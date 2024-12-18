@@ -21,8 +21,8 @@ on:
   #  - cron: '27 11 * * 5'
 
 jobs:
-  analyze:
-    name: Analyze
+  Build:
+    name: Build
     runs-on: ubuntu-latest
     environment: ${{ github.ref_name }}
     permissions:
@@ -55,6 +55,11 @@ jobs:
 
     - name: Build with Maven
       run: mvn clean install
+  Test:
+    name: Test
+    runs-on: ubuntu-latest
+    environment: ${{ github.ref_name }}
+    steps:
     - name: Veracode Pipeline
       continue-on-error: true
       run: |
@@ -92,7 +97,7 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/veravodedemo:${{ github.run_id }}
-    - name: Veracode SCA
+    - name: Veracode Docker SCA
       continue-on-error: true
       env:
        SRCCLR_API_TOKEN: ${{ secrets.SRCCLR_API_TOKEN }}
