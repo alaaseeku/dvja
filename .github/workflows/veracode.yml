@@ -55,11 +55,21 @@ jobs:
 
     - name: Build with Maven
       run: mvn clean install
+    - name: Upload Build Artifact
+      uses: actions/upload-artifact@v3
+      with:
+          name: build-output
+          path: target/
   Test:
     name: Test
     runs-on: ubuntu-latest
     environment: ${{ github.ref_name }}
+    needs: Build
     steps:
+    - name: Download Build Artifact
+      uses: actions/download-artifact@v3
+      with:
+          name: build-output
     - name: Veracode Pipeline
       continue-on-error: true
       run: |
