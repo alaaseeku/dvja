@@ -9,7 +9,7 @@
 # the `language` matrix defined below to confirm you have the correct set of
 # supported CodeQL languages.
 #
-name: "CodeQL"
+name: "Veracode Pipeline"
 
 on:
   push:
@@ -24,6 +24,7 @@ jobs:
   analyze:
     name: Analyze
     runs-on: ubuntu-latest
+    environment: ${{ github.ref_name }}
     permissions:
       actions: read
       contents: read
