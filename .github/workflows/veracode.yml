@@ -71,12 +71,19 @@ jobs:
 #      with:
 #          name: build-output
     - name: Veracode Pipeline
-      continue-on-error: true
-      run: |
-        curl -sSO https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
-        unzip -o pipeline-scan-LATEST.zip
-        java -jar pipeline-scan.jar -vid '${{ secrets.API_ID }}' -vkey '${{ secrets.API_KEY }}' --file "target/dvja-1.0-SNAPSHOT.war" --fail_on_severity "Very High, High"
-        rm -rf pipeline-scan-LATEST.zip pipeline-scan.jar
+      id: pipeline-scan
+      uses: veracode/Veracode-pipeline-scan-action@v1.0.12
+      with:
+          vid: ${{ secrets.API_ID }}
+          vkey: ${{ secrets.API_KEY }}
+          file: "target/dvja-1.0-SNAPSHOT.war" 
+  #  - name: Veracode Pipeline
+  #    continue-on-error: true
+  #    run: |
+  #      curl -sSO https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
+  #      unzip -o pipeline-scan-LATEST.zip
+  #      java -jar pipeline-scan.jar -vid '${{ secrets.API_ID }}' -vkey '${{ secrets.API_KEY }}' --file "target/dvja-1.0-SNAPSHOT.war" --fail_on_severity "Very High, High"
+  #      rm -rf pipeline-scan-LATEST.zip pipeline-scan.jar
     - name: Veracode Upload And Scan
       uses: veracode/veracode-uploadandscan-action@0.2.6
       continue-on-error: true
