@@ -87,7 +87,7 @@ jobs:
   #      java -jar pipeline-scan.jar -vid '${{ secrets.API_ID }}' -vkey '${{ secrets.API_KEY }}' --file "target/dvja-1.0-SNAPSHOT.war" --fail_on_severity "Very High, High"
   #      rm -rf pipeline-scan-LATEST.zip pipeline-scan.jar
     - name: Veracode Upload And Scan
-      uses: veracode/veracode-uploadandscan-action@0.2.6
+      uses: veracode/veracode-uploadandscan-action@0.2.7
       continue-on-error: true
       with:
           appname: 'Demo'
@@ -108,7 +108,6 @@ jobs:
       with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-
       # Step 3: Build and push Docker image
     - name: Build and Push Docker Image
       uses: docker/build-push-action@v4
@@ -117,6 +116,17 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/veravodedemo:${{ github.run_id }}
+    - name: Veracode Container/IaC/Secrets action step
+      uses: veracode/container_iac_secrets_scanning@v1.0.4
+      with:
+          vid: ${{ secrets.API_ID }}
+          vkey: ${{ secrets.API_KEY }}
+          command: "scan" 
+          type: "image"
+          source: ahahmed/veravodedemo:${{ github.run_id }}
+          format: "json"
+          debug: false
+          fail_build: true
     - name: Veracode Docker SCA
       continue-on-error: true
       env:
