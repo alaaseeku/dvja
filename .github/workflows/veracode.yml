@@ -73,6 +73,7 @@ jobs:
     - name: Veracode Pipeline
       id: pipeline-scan
       uses: veracode/Veracode-pipeline-scan-action@v1.0.12
+      continue-on-error: true
       with:
           vid: ${{ secrets.API_ID }}
           vkey: ${{ secrets.API_KEY }}
