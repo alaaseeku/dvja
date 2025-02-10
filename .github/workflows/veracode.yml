@@ -78,6 +78,7 @@ jobs:
           vid: ${{ secrets.API_ID }}
           vkey: ${{ secrets.API_KEY }}
           file: "target/dvja-1.0-SNAPSHOT.war" 
+          store_baseline_file: FALES
   #  - name: Veracode Pipeline
   #    continue-on-error: true
   #    run: |
@@ -94,10 +95,6 @@ jobs:
           filepath: 'target/dvja-1.0-SNAPSHOT.war'
           vid: '${{ secrets.API_ID }}'
           vkey: '${{ secrets.API_KEY }}'
-    - name: Run Veracode SCA
-      env:
-          SRCCLR_API_TOKEN: ${{ secrets.SRCCLR_API_TOKEN }}
-      uses: veracode/veracode-sca@v2.1.10
  
     - name: Veracode SCA
       continue-on-error: true
